@@ -1,0 +1,21 @@
+{
+  "domain": "dreambox",
+  "name": "Dreambox",
+  "codeowners": [
+    "@sreichholf"
+  ],
+  "config_flow": true,
+  "documentation": "https://github.com/sreichholf/home-assistant-dreambox/",
+  "integration_type": "device",
+  "iot_class": "local_polling",
+  "issue_tracker": "https://github.com/sreichholf/home-assistant-dreambox/issues",
+  "requirements": [
+    "dreamboxapi==1.0.4"
+  ],
+  "ssdp": [
+    {
+      "deviceType": "urn:dreambox-de:device:Dreambox:1"
+    }
+  ],
+  "version" : "0.9"
+}
