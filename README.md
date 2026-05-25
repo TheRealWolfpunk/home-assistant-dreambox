@@ -1,11 +1,12 @@
 # Use at your own risk!
+Forked from [https://github.com/sreichholf/home-assistant-dreambox](https://github.com/sreichholf/home-assistant-dreambox)
 
 ## Introduction
 
 A custom home-assistant component for dreambox integration using [python-dreamboxapi](https://github.com/sreichholf/python-dreamboxapi)
 
 ## Installation
-Copy the `dreambox` folder to `<home-assistant-config-dir>/custom_components/` and restart your home-assistant
+Add this repository's URL to HACS as a custom repository as a custom integration. Follow the usual custom integration installation steps.
 
 ## Configuration
 Autodiscovery is done via SSDP and should work for all somewhat recent dreamboxes. Probably even back to the DM7080.

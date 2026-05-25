@@ -2,13 +2,13 @@
   "domain": "dreambox",
   "name": "Dreambox",
   "codeowners": [
-    "@sreichholf"
+    "@TheRealWolfpunk"
   ],
   "config_flow": true,
-  "documentation": "https://github.com/sreichholf/home-assistant-dreambox/",
+  "documentation": "https://github.com/TheRealWolfpunk/home-assistant-dreambox/",
   "integration_type": "device",
   "iot_class": "local_polling",
-  "issue_tracker": "https://github.com/sreichholf/home-assistant-dreambox/issues",
+  "issue_tracker": "https://github.com/TheRealWolfpunk/home-assistant-dreambox/issues",
   "requirements": [
     "dreamboxapi==1.0.4"
   ],
