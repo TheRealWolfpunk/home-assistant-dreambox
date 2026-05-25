@@ -89,7 +89,7 @@ class DreamboxDevice(MediaPlayerEntity):
         self._attr_device_class = MediaPlayerDeviceClass.RECEIVER
         self._attr_device_info = DeviceInfo(
             name=name,
-            manufacturer="Leontech Ltd.",
+            manufacturer="dreambox.de",
             model=f"Dreambox {device.deviceinfo.deviceName.rstrip()}",
             identifiers={(DOMAIN, device.mac)},
             connections={(CONNECTION_NETWORK_MAC, device.mac)},
