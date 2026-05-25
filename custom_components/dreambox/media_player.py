@@ -99,7 +99,7 @@ class DreamboxDevice(MediaPlayerEntity):
         self._attr_name = name
         self._attr_supported_features = SUPPORTED_DREAMBOX
         self._attr_unique_id = device.mac
-        self._attr_media_content_type = MediaType.TVSHOW
+        self._attr_media_content_type = MediaType.CHANNEL
 
     def turn_off(self):
         """Turn off media player."""
@@ -181,8 +181,8 @@ class DreamboxDevice(MediaPlayerEntity):
         for bouquet in self._dreambox.bouquets:
             bouquet_info = {
                 "title": bouquet.name,
-                "media_class": MediaClass.TV_SHOW,
-                "children_media_class": MediaClass.CHANNEL,
+            "media_class": MediaClass.DIRECTORY,
+            "children_media_class": MediaClass.CHANNEL,
                 "media_content_id": bouquet.ref,
                 "media_content_type": "bouquet",
                 "can_play": False,
@@ -209,7 +209,7 @@ class DreamboxDevice(MediaPlayerEntity):
                 if media_content_type == "bouquet_list"
                 else MediaClass.PLAYLIST
             ),
-            "children_media_class": MediaClass.VIDEO,
+            "children_media_class": MediaClass.CHANNEL,
             "media_content_id": bouquet.ref,
             "media_content_type": media_content_type,
             "can_play": False,
@@ -219,9 +219,9 @@ class DreamboxDevice(MediaPlayerEntity):
         for service in bouquet.services:
             service_info = {
                 "title": service.name,
-                "media_class": MediaClass.VIDEO,
+                "media_class": MediaClass.CHANNEL,
                 "media_content_id": service.ref,
-                "media_content_type": MediaType.TVSHOW,
+                "media_content_type": MediaType.CHANNEL,
                 "can_play": True,
                 "thumbnail": self._dreambox.picon(service),
                 "can_expand": False,
@@ -250,7 +250,7 @@ class DreamboxDevice(MediaPlayerEntity):
         return response
 
     def play_media(self, media_type: str, media_id: str, **kwargs) -> None:
-        if media_type != MediaType.TVSHOW or not self._bouquet:
+        if media_type not in (MediaType.TVSHOW, MediaType.CHANNEL) or not self._bouquet:
             raise MediaPlayerException(
                 f"Media not supported: {media_type} / {media_id}"
             )
