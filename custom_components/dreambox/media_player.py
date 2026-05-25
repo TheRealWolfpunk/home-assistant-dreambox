@@ -181,7 +181,7 @@ class DreamboxDevice(MediaPlayerEntity):
         for bouquet in self._dreambox.bouquets:
             bouquet_info = {
                 "title": bouquet.name,
-                "media_class": MediaClass.PLAYLIST,
+                "media_class": MediaClass.TV_SHOW,
                 "children_media_class": MediaClass.CHANNEL,
                 "media_content_id": bouquet.ref,
                 "media_content_type": "bouquet",
@@ -189,18 +189,7 @@ class DreamboxDevice(MediaPlayerEntity):
                 "can_expand": True,
                 "children": [],
             }
-            list_info = {
-                "title": bouquet.name,
-                "media_class": MediaClass.LIST,
-                "children_media_class": MediaClass.CHANNEL,
-                "media_content_id": bouquet.ref,
-                "media_content_type": "bouquet_list",
-                "can_play": False,
-                "can_expand": True,
-                "children": [],
-            }
             library_info["children"].append(BrowseMedia(**bouquet_info))
-            library_info["children"].append(BrowseMedia(**list_info))
         return BrowseMedia(**library_info)
 
     def _browse_media_bouquet(
@@ -216,7 +205,7 @@ class DreamboxDevice(MediaPlayerEntity):
         bouquet_info = {
             "title": bouquet.name,
             "media_class": (
-                MediaClass.LIST
+                MediaClass.DIRECTORY
                 if media_content_type == "bouquet_list"
                 else MediaClass.PLAYLIST
             ),
