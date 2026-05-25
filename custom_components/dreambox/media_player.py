@@ -117,9 +117,15 @@ class DreamboxDevice(MediaPlayerEntity):
     def source(self) -> Optional[str]:
         return self._dreambox.current.name if self._dreambox.current else None
 
+    @staticmethod
+    def _is_playable_service(service) -> bool:
+        return not str(service.ref).startswith("1:64:")
+
     def select_source(self, source: str) -> None:
         if self._bouquet and self._bouquet.services:
             for service in self._bouquet.services:
+                if not self._is_playable_service(service):
+                    continue
                 if service.name == source:
                     self._dreambox.playService(service, self._bouquet)
                     return
@@ -217,6 +223,8 @@ class DreamboxDevice(MediaPlayerEntity):
             "children": [],
         }
         for service in bouquet.services:
+            if not self._is_playable_service(service):
+                continue
             service_info = {
                 "title": service.name,
                 "media_class": MediaClass.CHANNEL,
@@ -255,6 +263,8 @@ class DreamboxDevice(MediaPlayerEntity):
                 f"Media not supported: {media_type} / {media_id}"
             )
         for service in self._bouquet.services:
+            if not self._is_playable_service(service):
+                continue
             if service.ref == media_id:
                 self._dreambox.playService(service, self._bouquet)
                 return
@@ -282,7 +292,11 @@ class DreamboxDevice(MediaPlayerEntity):
 
         if self._dreambox.bouquet:
             self._bouquet = self._dreambox.bouquet
-            self._attr_source_list = [service.name for service in self._bouquet.services]
+            self._attr_source_list = [
+                service.name
+                for service in self._bouquet.services
+                if self._is_playable_service(service)
+            ]
             self._attr_media_playlist = self._bouquet.name
         else:
             self._bouquet = None
