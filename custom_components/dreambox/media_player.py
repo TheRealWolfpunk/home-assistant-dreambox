@@ -25,6 +25,7 @@ from homeassistant.const import (
 
 SUPPORTED_DREAMBOX = (
     MediaPlayerEntityFeature.BROWSE_MEDIA
+    | MediaPlayerEntityFeature.SELECT_SOURCE
     | MediaPlayerEntityFeature.PAUSE
     | MediaPlayerEntityFeature.PLAY
     | MediaPlayerEntityFeature.PLAY_MEDIA
@@ -84,6 +85,7 @@ class DreamboxDevice(MediaPlayerEntity):
         self._name = name
         self._bouquet = None
         self._dreambox = device
+        self._attr_source_list = []
         self._attr_device_class = MediaPlayerDeviceClass.RECEIVER
         self._attr_device_info = DeviceInfo(
             name=name,
@@ -110,6 +112,17 @@ class DreamboxDevice(MediaPlayerEntity):
     @property
     def media_image_url(self) -> Optional[str]:
         return self._dreambox.picon()
+
+    @property
+    def source(self) -> Optional[str]:
+        return self._dreambox.current.name if self._dreambox.current else None
+
+    def select_source(self, source: str) -> None:
+        if self._bouquet and self._bouquet.services:
+            for service in self._bouquet.services:
+                if service.name == source:
+                    self._dreambox.playService(service, self._bouquet)
+                    return
 
     def set_volume_level(self, volume) -> None:
         """Set volume level, range 0..1."""
@@ -279,8 +292,12 @@ class DreamboxDevice(MediaPlayerEntity):
         self._attr_volume_level = float(self._dreambox.volume) / 100.0
 
         if self._dreambox.bouquet:
-            self._attr_media_playlist = self._dreambox.bouquet.name
+            self._bouquet = self._dreambox.bouquet
+            self._attr_source_list = [service.name for service in self._bouquet.services]
+            self._attr_media_playlist = self._bouquet.name
         else:
+            self._bouquet = None
+            self._attr_source_list = []
             self._attr_media_playlist = None
 
         if self._attr_state == MediaPlayerState.PLAYING:
