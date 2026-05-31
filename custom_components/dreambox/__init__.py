@@ -1,7 +1,7 @@
 """The Dreambox integration."""
 import asyncio
 
-from dreamboxapi.api import DreamboxApi
+from .dreamboxapi.api import DreamboxApi
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import (
     CONF_DEVICES,

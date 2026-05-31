@@ -2,7 +2,7 @@ from urllib.parse import urlparse
 
 import homeassistant.helpers.config_validation as cv
 import voluptuous as vol
-from dreamboxapi.api import AuthenticationFailed, DreamboxApi
+from .dreamboxapi.api import AuthenticationFailed, DreamboxApi
 from homeassistant import config_entries
 from homeassistant.helpers.service_info.ssdp import (
     ATTR_UPNP_MODEL_NAME,
