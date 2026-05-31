@@ -175,17 +175,24 @@ class DreamboxConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         errors = {}
         if user_input is not None:
             self._name = user_input[CONF_NAME]
+            self._host = user_input[CONF_HOST]
             self._port = user_input[CONF_PORT]
             self._username = user_input[CONF_USERNAME]
             self._password = user_input[CONF_PASSWORD]
             self._ssl = user_input[CONF_SSL]
             self._piconpath = user_input[CONF_PATH]
+
+            for entry in self.hass.config_entries.async_entries(DOMAIN):
+                if entry.data[CONF_HOST] == self._host:
+                    return self.async_abort(reason="already_configured")
+
             result = await self.hass.async_add_executor_job(self._checkConnection)
             if result == RESULT_SUCCESS:
                 return self._getEntry()
             errors["base"] = result
         data = vol.Schema(
             {
+                vol.Optional(CONF_HOST, default=self._host): cv.string,
                 vol.Optional(CONF_NAME, default=self._name): cv.string,
                 vol.Optional(CONF_PORT, default=self._port): cv.port,
                 vol.Optional(CONF_USERNAME, default=self._username): cv.string,
